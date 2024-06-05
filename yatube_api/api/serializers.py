@@ -51,4 +51,4 @@ class FollowSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Follow
-        fields = ['user', 'following']
+        fields = '__all__'
