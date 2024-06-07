@@ -32,12 +32,10 @@ class CommentViewSet(viewsets.ModelViewSet):
         return self.get_post().comments.all()
 
     def get_post(self):
-        post_pk = self.kwargs['post_pk']
-        return Post.objects.get(pk=post_pk)
+        return Post.objects.get(pk=self.kwargs['post_pk'])
 
     def perform_create(self, serializer):
-        post = self.get_post()
-        serializer.save(author=self.request.user, post=post)
+        serializer.save(author=self.request.user, post=self.get_post())
 
 
 class FollowViewSet(viewsets.ModelViewSet):
@@ -48,5 +46,4 @@ class FollowViewSet(viewsets.ModelViewSet):
     search_fields = ['following__username']
 
     def get_queryset(self):
-        queryset = self.request.user.following.all()
-        return queryset
+        return self.request.user.following.all()
