@@ -43,14 +43,13 @@ class FollowSerializer(serializers.ModelSerializer):
         queryset=User.objects.all()
     )
 
-    def validate(self, data):
+    def validate_following(self, following):
         user = self.context['request'].user
-        following = data['following']
         if user == following:
             raise ValidationError("You cannot follow yourself.")
         if Follow.objects.filter(user=user, following=following).exists():
             raise ValidationError("You are already following this user.")
-        return data
+        return following
 
     class Meta:
         model = Follow
